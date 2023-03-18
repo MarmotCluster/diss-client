@@ -6,6 +6,7 @@ const API = {
   USER: {
     me: `/get-me`,
   },
+  search: `search-api`,
 };
 
 export default API;

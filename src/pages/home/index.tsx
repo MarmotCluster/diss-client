@@ -11,13 +11,30 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
-import React from 'react';
+import React, { FormEventHandler, useState } from 'react';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import DirectionsIcon from '@mui/icons-material/Directions';
+import useSearch from '../../hooks/useSearch';
+
+type Http = 'http' | 'https';
 
 const Home = () => {
+  const [http, setHttp] = useState<Http>('https');
+  const [url, setUrl] = useState<string>('');
+
+  const { search } = useSearch();
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    // console.log({ http, url });
+    if (url.length > 0) {
+      const res = await search(`${http}://${url}`);
+      console.log(res);
+    }
+  };
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -30,17 +47,20 @@ const Home = () => {
           alignItems: 'center',
         }}
       >
-        <Typography>Xss Online</Typography>
+        <Typography sx={{ md: 1, fontFamily: 'Poppins', fontWeight: 900, fontSize: 36 }}>Xss Online</Typography>
         <Paper
           component="form"
-          sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
-          onSubmit={(e) => e.preventDefault()}
+          sx={{
+            p: '2px 4px',
+            display: 'flex',
+            alignItems: 'center',
+            width: 400,
+            boxShadow: '0px 8px 20px rgba(0,0,0,0.18)',
+            border: '1px solid #f4f4f4',
+          }}
+          onSubmit={(e) => handleSubmit(e)}
         >
-          {/* <IconButton sx={{ p: '10px' }} aria-label="menu">
-            <MenuIcon />
-          </IconButton> */}
           <FormControl>
-            {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -55,9 +75,11 @@ const Home = () => {
                 fontSize: 14,
                 fontWeight: 700,
               }}
+              onChange={(e) => setHttp(e.target.value as Http)}
+              value={http}
             >
-              <MenuItem value={10}>HTTP</MenuItem>
-              <MenuItem value={20}>HTTPS</MenuItem>
+              <MenuItem value={'http'}>HTTP</MenuItem>
+              <MenuItem value={'https'}>HTTPS</MenuItem>
             </Select>
           </FormControl>
           <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
@@ -65,8 +87,10 @@ const Home = () => {
             sx={{ ml: 1, flex: 1, fontFamily: 'Poppins', fontSize: 14, fontWeight: 700 }}
             placeholder="www.example.com/"
             inputProps={{ 'aria-label': 'www.example.com/' }}
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
           />
-          <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+          <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
             <SearchIcon />
           </IconButton>
         </Paper>
