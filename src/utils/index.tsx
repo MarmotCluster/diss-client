@@ -1,6 +1,7 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import server from '../configs/server';
 import API from '../configs/API';
+import { ValidationError } from 'yup';
 
 interface REST {
   [key: string]: 'get' | 'post' | 'put' | 'delete';
@@ -13,32 +14,43 @@ export const REST: REST = {
   DELETE: 'delete',
 };
 
-interface ResponseUsable {
-  status: number | null;
+export interface ResponseUsable {
+  status: number;
   data: any;
 }
 
 export const getResponseUsable = (response: AxiosResponse): ResponseUsable => {
   return {
-    status: response.status ? response.status : null,
+    status: response.status ? response.status : 500,
     data: response.data ? response.data : null,
   };
 };
 
-interface YupErrorMessage {
-  path: string;
-  message: string;
-  inner: any[];
-}
+// interface YupErrorMessage {
+//   path: string;
+//   message: string;
+//   inner: any[];
+// }
 
-export const getYupErrorMessages = ({ path, message, inner }: YupErrorMessage) => {
+type YupErrorMessage = Record<string, string>;
+
+export const getYupErrorMessages = ({ path, message, inner }: ValidationError): YupErrorMessage => {
   if (inner && inner.length) {
-    return inner.reduce((acc, { path, message }) => {
-      acc[path] = message;
+    return inner.reduce((acc: YupErrorMessage, { path, message }) => {
+      if (path) acc[path] = message;
       return acc;
     }, {});
   }
-  return { [path]: message };
+  if (path) {
+    return { [path]: message };
+  }
+  return {};
+};
+
+export const getErrorMessage = (responseData: any) => {
+  return responseData.message && responseData.message !== 'INTERNAL_ERROR'
+    ? responseData.message
+    : 'An unknwon Error occured. Please try it later.';
 };
 
 export const refresh = (
@@ -109,7 +121,7 @@ export const refresh = (
       }
     }
 
-    return { status: 400, data: { message: 'NOT_SIGNED_IN' } };
+    return { status: 500, data: { message: 'INTERNAL_ERROR' } };
   };
 
   const result = fetchData();
@@ -128,7 +140,7 @@ export const tryCatchResponse = (func: () => Promise<ResponseUsable>): Promise<R
       return new Promise((resolve) => resolve(getResponseUsable(res)));
     }
   }
-  return new Promise((resolve) => resolve({ status: null, data: null }));
+  return new Promise((resolve) => resolve({ status: 500, data: null }));
 };
 
 export const unescapeHTML = (escapedHTML: string) => {

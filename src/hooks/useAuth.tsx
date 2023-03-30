@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { useRecoilState } from 'recoil';
 import API from '../configs/API';
 import server from '../configs/server';
@@ -5,7 +6,7 @@ import { authState } from '../stores/auth/atom';
 import { getResponseUsable, refresh, REST, tryCatchResponse } from '../utils';
 
 export interface LoginProps {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -20,9 +21,9 @@ const useAuth = () => {
     return res;
   };
 
-  const login = async ({ email, password }: LoginProps, remeberMe = false) => {
-    return await tryCatchResponse(async () => {
-      const res = await server.post(API.AUTH.login, { email, password });
+  const login = async ({ username, password }: LoginProps, remeberMe = false) => {
+    try {
+      const res = await server.post(API.AUTH.login, { username, password });
 
       window.localStorage.setItem('accessToken', res.data.access_token);
       if (remeberMe) {
@@ -32,7 +33,13 @@ const useAuth = () => {
       setAuth((state) => ({ ...state, isSignedIn: true }));
 
       return getResponseUsable(res);
-    });
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response) return getResponseUsable(err.response);
+        return { status: 500, data: null };
+      }
+      return { status: 500, data: null };
+    }
   };
 
   const logout = () => {
@@ -41,13 +48,16 @@ const useAuth = () => {
     setAuth((state) => ({ ...state, isSignedIn: false, userData: null }));
   };
 
-  const register = async (form: any) => {
-    // try {
-    //   const res = await server.post(API.USER.default, form);
-    //   return getResponseUsable(res);
-    // } catch (err) {
-    //   return getResponseUsable(err.response);
-    // }
+  const register = async (form: { username: string; password: string; re_password: string }) => {
+    try {
+      const res = await server.post(API.AUTH.register, form);
+      return getResponseUsable(res);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response) return getResponseUsable(err.response);
+        return { status: 500, data: null };
+      }
+    }
   };
 
   return { me, login, logout, register };

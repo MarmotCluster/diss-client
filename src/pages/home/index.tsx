@@ -16,7 +16,9 @@ import React, { FormEventHandler, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import DirectionsIcon from '@mui/icons-material/Directions';
-import useSearch from '../../hooks/useSearch';
+import useScan from '../../hooks/useSearch';
+import { toast } from 'react-hot-toast';
+import { getErrorMessage } from '../../utils';
 
 type Http = 'http' | 'https';
 
@@ -24,14 +26,16 @@ const Home = () => {
   const [http, setHttp] = useState<Http>('https');
   const [url, setUrl] = useState<string>('');
 
-  const { search } = useSearch();
+  const { search } = useScan();
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     // console.log({ http, url });
     if (url.length > 0) {
       const res = await search(`${http}://${url}`);
-      console.log(res);
+      if (res.status > 400) {
+        toast.error(getErrorMessage(res.data));
+      }
     }
   };
 

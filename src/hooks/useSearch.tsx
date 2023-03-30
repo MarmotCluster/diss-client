@@ -3,10 +3,10 @@ import API from '../configs/API';
 import server from '../configs/server';
 import { getResponseUsable, refresh, REST, tryCatchResponse } from '../utils';
 
-const useSearch = () => {
+const useScan = () => {
   const search = async (url: string) => {
     return await tryCatchResponse(async () => {
-      const res = await refresh(REST.POST, API.search, { data: url });
+      const res = await refresh(REST.POST, API.scan, { data: { href: url } });
       return getResponseUsable(res);
     });
   };
@@ -14,4 +14,4 @@ const useSearch = () => {
   return { search };
 };
 
-export default useSearch;
+export default useScan;

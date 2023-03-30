@@ -1,12 +1,13 @@
 const API = {
   AUTH: {
-    login: `/login-api`,
+    login: `/login`,
+    register: `/register`,
     refresh: `/refresh-api`,
   },
   USER: {
     me: `/get-me`,
   },
-  search: `search-api`,
+  scan: `/scan`,
 };
 
 export default API;
