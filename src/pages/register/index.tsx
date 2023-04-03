@@ -1,5 +1,5 @@
-import { Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import useAuth, { LoginProps } from '../../hooks/useAuth';
 import * as Yup from 'yup';
 import { getYupErrorMessages } from '../../utils';
@@ -8,21 +8,31 @@ import useConvenience from '../../hooks/useConvenience';
 import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 
+interface RegisterProps {
+  username: string;
+  password: string;
+  re_password: string;
+}
+
 const schema = Yup.object().shape({
   username: Yup.string().required(),
   password: Yup.string().required(),
+  re_password: Yup.string()
+    .required()
+    .oneOf([Yup.ref<string>('password')], 'Field should be same with password.'),
 });
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
 
-  const { login } = useAuth();
+  const { register } = useAuth();
   const simpler = useConvenience();
 
-  const [form, setForm] = useState<LoginProps>({ username: '', password: '' });
-  const [error, setError] = useState<LoginProps>({
+  const [form, setForm] = useState<RegisterProps>({ username: '', password: '', re_password: '' });
+  const [error, setError] = useState<RegisterProps>({
     username: '',
     password: '',
+    re_password: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,17 +42,18 @@ const Login = () => {
       setError({
         username: '',
         password: '',
+        re_password: '',
       });
       schema.validateSync(form, { abortEarly: false });
 
-      const res = await login(form);
+      const res = await register(form);
       simpler.showToastError(res, () => navigate('/'));
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = getYupErrorMessages(err);
-        const { username = '', password = '' } = errorMessages;
-        const loginProps = { username, password };
-        setError(loginProps);
+        const { username = '', password = '', re_password = '' } = errorMessages;
+        const registerProps = { username, password, re_password };
+        setError(registerProps);
       }
     }
   };
@@ -52,15 +63,15 @@ const Login = () => {
       <form onSubmit={handleSubmit}>
         <Grid container flexDirection="column" sx={{ mt: 8, '& > *:not(:last-child)': { mb: 2 } }}>
           <Grid item>
-            <Typography>Sign in</Typography>
+            <Typography>Register</Typography>
           </Grid>
-          {['username', 'password'].map((item, index) => {
+          {['username', 'password', 're_password'].map((item, index) => {
             return (
               <Grid key={index} item>
                 <TextField
                   fullWidth
                   size="small"
-                  type={item === 'password' ? 'password' : 'text'}
+                  type={['password', 're_password'].includes(item) ? 'password' : 'text'}
                   onChange={(e) => setForm((state) => ({ ...state, [item]: e.target.value }))}
                   error={error[item as keyof LoginProps].length > 0}
                   helperText={error[item as keyof LoginProps]}
@@ -70,17 +81,17 @@ const Login = () => {
           })}
           <Grid item>
             <Button variant="contained" fullWidth type="submit">
-              Log in
+              Register
             </Button>
           </Grid>
           <Grid item>
             <Grid container spacing={1} justifyContent="center">
               <Grid item>
-                <Typography>Have no Account?</Typography>
+                <Typography>Already a member?</Typography>
               </Grid>
               <Grid item>
-                <Link component={RouterLink} to="/register">
-                  Register
+                <Link component={RouterLink} to="/login">
+                  Sign in
                 </Link>
               </Grid>
             </Grid>
@@ -91,4 +102,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

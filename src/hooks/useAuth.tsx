@@ -57,6 +57,7 @@ const useAuth = () => {
         if (err.response) return getResponseUsable(err.response);
         return { status: 500, data: null };
       }
+      return { status: 500, data: null };
     }
   };
 
