@@ -47,7 +47,8 @@ const Register = () => {
       schema.validateSync(form, { abortEarly: false });
 
       const res = await register(form);
-      simpler.showToastError(res, () => navigate('/'));
+
+      simpler.showToastError(res, () => navigate('/login'));
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = getYupErrorMessages(err);
