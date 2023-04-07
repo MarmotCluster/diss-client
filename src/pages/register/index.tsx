@@ -9,12 +9,14 @@ import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 
 interface RegisterProps {
+  email: string;
   username: string;
   password: string;
   re_password: string;
 }
 
 const schema = Yup.object().shape({
+  email: Yup.string().required(),
   username: Yup.string().required(),
   password: Yup.string().required(),
   re_password: Yup.string()
@@ -28,8 +30,9 @@ const Register = () => {
   const { register } = useAuth();
   const simpler = useConvenience();
 
-  const [form, setForm] = useState<RegisterProps>({ username: '', password: '', re_password: '' });
+  const [form, setForm] = useState<RegisterProps>({ email: '', username: '', password: '', re_password: '' });
   const [error, setError] = useState<RegisterProps>({
+    email: '',
     username: '',
     password: '',
     re_password: '',
@@ -40,6 +43,7 @@ const Register = () => {
 
     try {
       setError({
+        email: '',
         username: '',
         password: '',
         re_password: '',
@@ -52,8 +56,8 @@ const Register = () => {
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = getYupErrorMessages(err);
-        const { username = '', password = '', re_password = '' } = errorMessages;
-        const registerProps = { username, password, re_password };
+        const { email = '', username = '', password = '', re_password = '' } = errorMessages;
+        const registerProps = { email, username, password, re_password };
         setError(registerProps);
       }
     }
@@ -66,7 +70,7 @@ const Register = () => {
           <Grid item>
             <Typography>Register</Typography>
           </Grid>
-          {['username', 'password', 're_password'].map((item, index) => {
+          {['email', 'username', 'password', 're_password'].map((item, index) => {
             return (
               <Grid key={index} item>
                 <TextField
@@ -75,10 +79,17 @@ const Register = () => {
                   name={item}
                   placeholder={item}
                   size="small"
-                  type={['password', 're_password'].includes(item) ? 'password' : 'text'}
+                  type={
+                    {
+                      email: 'email',
+                      name: 'text',
+                      password: 'password',
+                      re_password: 'password',
+                    }[item]
+                  }
                   onChange={(e) => setForm((state) => ({ ...state, [item]: e.target.value }))}
-                  error={error[item as keyof LoginProps].length > 0}
-                  helperText={error[item as keyof LoginProps]}
+                  error={error[item as keyof RegisterProps].length > 0}
+                  helperText={error[item as keyof RegisterProps]}
                 />
               </Grid>
             );

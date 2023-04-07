@@ -6,7 +6,7 @@ import { authState } from '../stores/auth/atom';
 import { getResponseUsable, refresh, REST, tryCatchResponse } from '../utils';
 
 export interface LoginProps {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -21,9 +21,9 @@ const useAuth = () => {
     return res;
   };
 
-  const login = async ({ username, password }: LoginProps, remeberMe = false) => {
+  const login = async ({ email, password }: LoginProps, remeberMe = false) => {
     try {
-      const res = await server.post(API.AUTH.login, { username, password });
+      const res = await server.post(API.AUTH.login, { email, password });
 
       window.localStorage.setItem('accessToken', res.data.access_token);
       if (remeberMe) {
@@ -48,9 +48,10 @@ const useAuth = () => {
     setAuth((state) => ({ ...state, isSignedIn: false, userData: null }));
   };
 
-  const register = async (form: { username: string; password: string; re_password: string }) => {
+  const register = async (form: { email: string; username: string; password: string; re_password: string }) => {
+    const { email, username: name, password, re_password } = form;
     try {
-      const res = await server.post(API.AUTH.register, form);
+      const res = await server.post(API.AUTH.register, { email, name, password, re_password });
       return getResponseUsable(res);
     } catch (err) {
       if (err instanceof AxiosError) {

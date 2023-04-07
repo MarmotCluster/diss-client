@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 
 const schema = Yup.object().shape({
-  username: Yup.string().required(),
+  email: Yup.string().required(),
   password: Yup.string().required(),
 });
 
@@ -19,9 +19,9 @@ const Login = () => {
   const { login } = useAuth();
   const simpler = useConvenience();
 
-  const [form, setForm] = useState<LoginProps>({ username: '', password: '' });
+  const [form, setForm] = useState<LoginProps>({ email: '', password: '' });
   const [error, setError] = useState<LoginProps>({
-    username: '',
+    email: '',
     password: '',
   });
 
@@ -30,7 +30,7 @@ const Login = () => {
 
     try {
       setError({
-        username: '',
+        email: '',
         password: '',
       });
       schema.validateSync(form, { abortEarly: false });
@@ -40,8 +40,8 @@ const Login = () => {
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = getYupErrorMessages(err);
-        const { username = '', password = '' } = errorMessages;
-        const loginProps = { username, password };
+        const { email = '', password = '' } = errorMessages;
+        const loginProps = { email, password };
         setError(loginProps);
       }
     }
@@ -54,7 +54,7 @@ const Login = () => {
           <Grid item>
             <Typography>Sign in</Typography>
           </Grid>
-          {['username', 'password'].map((item, index) => {
+          {['email', 'password'].map((item, index) => {
             return (
               <Grid key={index} item>
                 <TextField
@@ -63,7 +63,7 @@ const Login = () => {
                   name={item}
                   placeholder={item}
                   size="small"
-                  type={item === 'password' ? 'password' : 'text'}
+                  type={item === 'password' ? 'password' : 'email'}
                   onChange={(e) => setForm((state) => ({ ...state, [item]: e.target.value }))}
                   error={error[item as keyof LoginProps].length > 0}
                   helperText={error[item as keyof LoginProps]}
