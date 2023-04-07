@@ -71,6 +71,9 @@ const Register = () => {
               <Grid key={index} item>
                 <TextField
                   fullWidth
+                  id={item}
+                  name={item}
+                  placeholder={item}
                   size="small"
                   type={['password', 're_password'].includes(item) ? 'password' : 'text'}
                   onChange={(e) => setForm((state) => ({ ...state, [item]: e.target.value }))}

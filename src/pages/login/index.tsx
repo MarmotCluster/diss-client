@@ -59,6 +59,9 @@ const Login = () => {
               <Grid key={index} item>
                 <TextField
                   fullWidth
+                  id={item}
+                  name={item}
+                  placeholder={item}
                   size="small"
                   type={item === 'password' ? 'password' : 'text'}
                   onChange={(e) => setForm((state) => ({ ...state, [item]: e.target.value }))}
