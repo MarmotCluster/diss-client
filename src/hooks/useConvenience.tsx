@@ -4,8 +4,8 @@ import { getErrorMessage, ResponseUsable } from '../utils';
 
 const useConvenience = () => {
   const showToastError = (response: ResponseUsable, onSuccess?: () => void) => {
-    if (response.status > 400) {
-      toast.error(getErrorMessage(response));
+    if (response.status >= 400) {
+      toast.error(getErrorMessage(response.data));
     } else if (Math.floor(response.status / 100) === 2) {
       if (onSuccess) onSuccess();
     }
