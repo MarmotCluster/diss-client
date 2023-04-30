@@ -5,11 +5,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/global/Header';
 import Home from './pages/home';
 import navigation from './router/navigation';
+import Loading from './components/global/Loading';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Toaster position="bottom-center" />
+      <Loading />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

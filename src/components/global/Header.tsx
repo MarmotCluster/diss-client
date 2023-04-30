@@ -1,3 +1,4 @@
+import { Avatar, IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -21,6 +22,11 @@ const Header = () => {
           <Button component={RouterLink} to="/login">
             Sign in
           </Button>
+        </Grid>
+        <Grid item>
+          <IconButton>
+            <Avatar />
+          </IconButton>
         </Grid>
       </Grid>
     </Box>

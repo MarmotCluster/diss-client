@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
+import { Button, Card, CardContent, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import useAuth, { LoginProps } from '../../hooks/useAuth';
 import * as Yup from 'yup';
@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import useConvenience from '../../hooks/useConvenience';
 import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
+import { styleCardDefault } from '../../styles';
 
 const schema = Yup.object().shape({
   email: Yup.string().required(),
@@ -48,48 +49,54 @@ const Login = () => {
   };
 
   return (
-    <Container>
-      <form onSubmit={handleSubmit}>
-        <Grid container flexDirection="column" sx={{ mt: 8, '& > *:not(:last-child)': { mb: 2 } }}>
-          <Grid item>
-            <Typography>Sign in</Typography>
-          </Grid>
-          {['email', 'password'].map((item, index) => {
-            return (
-              <Grid key={index} item>
-                <TextField
-                  fullWidth
-                  id={item}
-                  name={item}
-                  placeholder={item}
-                  size="small"
-                  type={item === 'password' ? 'password' : 'email'}
-                  onChange={(e) => setForm((state) => ({ ...state, [item]: e.target.value }))}
-                  error={error[item as keyof LoginProps].length > 0}
-                  helperText={error[item as keyof LoginProps]}
-                />
-              </Grid>
-            );
-          })}
-          <Grid item>
-            <Button variant="contained" fullWidth type="submit">
-              Log in
-            </Button>
-          </Grid>
-          <Grid item>
-            <Grid container spacing={1} justifyContent="center">
+    <Container
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontFamily: 'Poppins' }}
+    >
+      <Card sx={{ ...styleCardDefault, width: 500 }}>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <Grid container flexDirection="column" sx={{ '& > *:not(:last-child)': { mb: 2 } }}>
               <Grid item>
-                <Typography>Have no Account?</Typography>
+                <Typography>Sign in</Typography>
+              </Grid>
+              {['email', 'password'].map((item, index) => {
+                return (
+                  <Grid key={index} item>
+                    <TextField
+                      fullWidth
+                      id={item}
+                      name={item}
+                      placeholder={item}
+                      size="small"
+                      type={item === 'password' ? 'password' : 'email'}
+                      onChange={(e) => setForm((state) => ({ ...state, [item]: e.target.value }))}
+                      error={error[item as keyof LoginProps].length > 0}
+                      helperText={error[item as keyof LoginProps]}
+                    />
+                  </Grid>
+                );
+              })}
+              <Grid item>
+                <Button variant="contained" fullWidth type="submit">
+                  Log in
+                </Button>
               </Grid>
               <Grid item>
-                <Link component={RouterLink} to="/register">
-                  Register
-                </Link>
+                <Grid container spacing={1} justifyContent="center">
+                  <Grid item>
+                    <Typography>Have no Account?</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Link component={RouterLink} to="/register">
+                      Register
+                    </Link>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Grid>
-      </form>
+          </form>
+        </CardContent>
+      </Card>
     </Container>
   );
 };

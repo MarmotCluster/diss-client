@@ -51,7 +51,7 @@ const Home = () => {
           alignItems: 'center',
         }}
       >
-        <Typography sx={{ md: 1, fontFamily: 'Poppins', fontWeight: 900, fontSize: 36 }}>Xss Online</Typography>
+        <Typography sx={{ md: 1, fontFamily: 'Poppins', fontWeight: 900, fontSize: 36 }}>Injection Online</Typography>
         <Paper
           component="form"
           sx={{
