@@ -10,15 +10,26 @@ import Loading from './components/global/Loading';
 export default function App() {
   return (
     <BrowserRouter>
-      <Toaster position="bottom-center" />
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          className: '',
+          style: {
+            fontFamily: 'Poppins',
+            maxWidth: 800,
+          },
+        }}
+      />
       <Loading />
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        {navigation.map(({ path, element }, index) => {
-          return <Route {...{ key: index, path, element }} />;
-        })}
-      </Routes>
+      <div style={{ fontFamily: 'Poppins' }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          {navigation.map(({ path, element }, index) => {
+            return <Route {...{ key: index, path, element }} />;
+          })}
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

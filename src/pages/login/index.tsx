@@ -8,6 +8,8 @@ import useConvenience from '../../hooks/useConvenience';
 import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 import { styleCardDefault } from '../../styles';
+import { useRecoilState } from 'recoil';
+import { globalState } from '../../stores/global/atom';
 
 const schema = Yup.object().shape({
   email: Yup.string().required(),
@@ -16,6 +18,8 @@ const schema = Yup.object().shape({
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const [global, setGlobal] = useRecoilState(globalState);
 
   const { login } = useAuth();
   const simpler = useConvenience();
@@ -36,6 +40,7 @@ const Login = () => {
       });
       schema.validateSync(form, { abortEarly: false });
 
+      setGlobal((v) => ({ ...v, loading: true }));
       const res = await login(form);
       simpler.showToastError(res, () => navigate('/'));
     } catch (err) {
@@ -45,13 +50,13 @@ const Login = () => {
         const loginProps = { email, password };
         setError(loginProps);
       }
+    } finally {
+      setGlobal((v) => ({ ...v, loading: false }));
     }
   };
 
   return (
-    <Container
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontFamily: 'Poppins' }}
-    >
+    <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <Card sx={{ ...styleCardDefault, width: 500 }}>
         <CardContent>
           <form onSubmit={handleSubmit}>

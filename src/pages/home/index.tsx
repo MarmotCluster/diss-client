@@ -10,6 +10,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
 } from '@mui/material';
 import React, { FormEventHandler, useState } from 'react';
 
@@ -19,10 +22,14 @@ import DirectionsIcon from '@mui/icons-material/Directions';
 import useScan from '../../hooks/useSearch';
 import { toast } from 'react-hot-toast';
 import { getErrorMessage } from '../../utils';
+import { useRecoilState } from 'recoil';
+import { globalState } from '../../stores/global/atom';
 
 type Http = 'http' | 'https';
 
 const Home = () => {
+  const [global, setGlobal] = useRecoilState(globalState);
+
   const [http, setHttp] = useState<Http>('https');
   const [url, setUrl] = useState<string>('');
 
@@ -32,9 +39,17 @@ const Home = () => {
     e.preventDefault();
     // console.log({ http, url });
     if (url.length > 0) {
-      const res = await search(`${http}://${url}`);
-      if (res.status > 400) {
-        toast.error(getErrorMessage(res.data));
+      try {
+        setGlobal((v) => ({ ...v, loading: true }));
+        const res = await search(`${http}://${url}`);
+        if (res.status > 400) {
+          toast.error(getErrorMessage(res.data));
+        } else {
+          console.log(res);
+        }
+      } catch (err) {
+      } finally {
+        setGlobal((v) => ({ ...v, loading: false }));
       }
     }
   };
@@ -51,14 +66,29 @@ const Home = () => {
           alignItems: 'center',
         }}
       >
-        <Typography sx={{ md: 1, fontFamily: 'Poppins', fontWeight: 900, fontSize: 36 }}>Injection Online</Typography>
+        <Typography
+          sx={{
+            md: 1,
+            fontFamily: 'Poppins',
+            fontWeight: 900,
+            fontSize: 36,
+            mb: 6,
+            background: 'linear-gradient(135deg, rgba(255,0,0,1) 0%, rgba(197,0,255,1) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            userSelect: 'none',
+          }}
+        >
+          Injection Online
+        </Typography>
         <Paper
           component="form"
           sx={{
             p: '2px 4px',
             display: 'flex',
             alignItems: 'center',
-            width: 400,
+            width: 480,
             boxShadow: '0px 8px 20px rgba(0,0,0,0.18)',
             border: '1px solid #f4f4f4',
           }}
@@ -98,6 +128,9 @@ const Home = () => {
             <SearchIcon />
           </IconButton>
         </Paper>
+        <FormGroup sx={{ color: '#111' }}>
+          <FormControlLabel control={<Checkbox />} label="i have permission to scan this site." />
+        </FormGroup>
       </Box>
     </Container>
   );

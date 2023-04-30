@@ -48,6 +48,10 @@ export const getYupErrorMessages = ({ path, message, inner }: ValidationError): 
 };
 
 export const getErrorMessage = (responseData: any) => {
+  if (!responseData) {
+    return 'An unknwon Error occured. Please try it later.';
+  }
+
   return responseData.message && responseData.message !== 'INTERNAL_ERROR'
     ? responseData.message
     : 'An unknwon Error occured. Please try it later.';
