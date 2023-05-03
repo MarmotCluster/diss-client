@@ -24,10 +24,14 @@ import { toast } from 'react-hot-toast';
 import { getErrorMessage } from '../../utils';
 import { useRecoilState } from 'recoil';
 import { globalState } from '../../stores/global/atom';
+import { useNavigate } from 'react-router-dom';
+import InjectionOnline from '../../components/InjectionOnline';
 
 type Http = 'http' | 'https';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const [global, setGlobal] = useRecoilState(globalState);
 
   const [http, setHttp] = useState<Http>('https');
@@ -45,7 +49,7 @@ const Home = () => {
         if (res.status > 400) {
           toast.error(getErrorMessage(res.data));
         } else {
-          console.log(res);
+          navigate(`/result/${res.data.resultLink}`); // 응답 데이터는 resultLink로 리다이렉트할 링크를 전송하도록 임의 채택
         }
       } catch (err) {
       } finally {
@@ -66,22 +70,7 @@ const Home = () => {
           alignItems: 'center',
         }}
       >
-        <Typography
-          sx={{
-            md: 1,
-            fontFamily: 'Poppins',
-            fontWeight: 900,
-            fontSize: 36,
-            mb: 6,
-            background: 'linear-gradient(135deg, rgba(255,0,0,1) 0%, rgba(197,0,255,1) 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            userSelect: 'none',
-          }}
-        >
-          Injection Online
-        </Typography>
+        <InjectionOnline />
         <Paper
           component="form"
           sx={{
