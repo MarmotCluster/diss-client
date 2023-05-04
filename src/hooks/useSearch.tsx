@@ -3,10 +3,14 @@ import API from '../configs/API';
 import server from '../configs/server';
 import { getResponseUsable, refresh, REST, tryCatchResponse } from '../utils';
 
+type SearchType = 'injection' | 'traversal';
+
 const useScan = () => {
-  const search = async (url: string) => {
+  const search = async (url: string, type?: SearchType) => {
+    if (!type) type = 'injection';
+
     return await tryCatchResponse(async () => {
-      const res = await refresh(REST.POST, API.scan, { data: { href: url } });
+      const res = await refresh(REST.POST, API.scan, { data: { type, href: url } });
       return getResponseUsable(res);
     });
   };
