@@ -6,13 +6,19 @@ import { getResponseUsable, refresh, REST, tryCatchResponse } from '../utils';
 type SearchType = 'injection' | 'traversal';
 
 const useScan = () => {
-  const search = async (url: string, type?: SearchType) => {
-    if (!type) type = 'injection';
-
-    return await tryCatchResponse(async () => {
-      const res = await refresh(REST.POST, API.scan, { data: { type, href: url } });
-      return getResponseUsable(res);
-    });
+  const search = {
+    injection: async (url: string) => {
+      return await tryCatchResponse(async () => {
+        const res = await refresh(REST.POST, API.scan, { data: { href: url } });
+        return getResponseUsable(res);
+      });
+    },
+    traversal: async (url: string) => {
+      return await tryCatchResponse(async () => {
+        const res = await refresh(REST.POST, API.scan2, { data: { href: url } });
+        return getResponseUsable(res);
+      });
+    },
   };
 
   return { search };

@@ -53,7 +53,12 @@ const Home = () => {
       }
       try {
         setGlobal((v) => ({ ...v, loading: true }));
-        const res = await search(`${http}://${url}`, !scanType ? 'injection' : 'traversal');
+        let res;
+        if (!scanType) {
+          res = await search.injection(`${http}://${url}`);
+        } else {
+          res = await search.traversal(`${http}://${url}`);
+        }
         if (res.status > 400) {
           toast.error(getErrorMessage(res.data));
         } else {
