@@ -2,6 +2,7 @@ import React from 'react';
 import Login from '../pages/login';
 import Register from '../pages/register';
 import ScanResult from '../pages/result';
+import DummySucceeds from '../pages/succeeds';
 
 export const ACCESS_DENY_ON_SIGNED_IN = ['/login', , '/register'];
 export const ACCESS_DENY_ON_SIGNED_OUT = ['/articles/create', '/users/me'];
@@ -23,6 +24,10 @@ const navigation: Navigation[] = [
   {
     path: '/result/:id',
     element: <ScanResult />,
+  },
+  {
+    path: '/scan_injection_success',
+    element: <DummySucceeds />,
   },
 ];
 

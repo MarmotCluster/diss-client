@@ -28,6 +28,7 @@ import { globalState } from '../../stores/global/atom';
 import { useNavigate } from 'react-router-dom';
 import InjectionOnline from '../../components/InjectionOnline';
 import PathTraversalOnline from '../../components/PathTraversalOnline';
+import axios from 'axios';
 
 type Http = 'http' | 'https';
 
