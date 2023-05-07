@@ -29,6 +29,7 @@ import { useNavigate } from 'react-router-dom';
 import InjectionOnline from '../../components/InjectionOnline';
 import PathTraversalOnline from '../../components/PathTraversalOnline';
 import axios from 'axios';
+import { scanResultState } from '../../stores/scanResult/atom';
 
 type Http = 'http' | 'https';
 
@@ -36,6 +37,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   const [global, setGlobal] = useRecoilState(globalState);
+  const [result, setResult] = useRecoilState(scanResultState);
 
   const [http, setHttp] = useState<Http>('https');
   const [url, setUrl] = useState<string>('');
@@ -60,9 +62,10 @@ const Home = () => {
         } else {
           res = await search.traversal(`${http}://${url}`);
         }
-        if (res.status > 400) {
+        if (res.status >= 400) {
           toast.error(getErrorMessage(res.data));
         } else {
+          setResult([...res.data]);
           navigate(`/result/${res.data.resultLink}`); // 응답 데이터는 resultLink로 리다이렉트할 링크를 전송하도록 임의 채택
         }
       } catch (err) {
