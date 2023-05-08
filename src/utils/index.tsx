@@ -1,4 +1,4 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import server from '../configs/server';
 import API from '../configs/API';
 import { ValidationError } from 'yup';
@@ -60,7 +60,7 @@ export const getErrorMessage = (responseData: any) => {
 export const refresh = (
   method: 'get' | 'post' | 'put' | 'delete',
   address: string,
-  config: { data?: any; header?: AxiosRequestConfig['headers'] }
+  config: { data?: any; header?: AxiosRequestConfig['headers']; cancelToken?: AxiosRequestConfig['cancelToken'] }
 ) => {
   const fetchData = async (bypass: boolean = false): Promise<any> => {
     const storedToken = window.localStorage.getItem('accessToken');
@@ -77,17 +77,25 @@ export const refresh = (
             },
           });
         } else if (method === REST.POST || method === REST.PUT) {
-          const { data, header } = config;
+          const { data, header, cancelToken } = config;
           res = await server[method](
             address,
             { ...data },
-            { headers: { Authorization: `Bearer ${storedToken}`, ...header } }
+            { headers: { Authorization: `Bearer ${storedToken}`, ...header }, cancelToken }
           );
         }
 
         return getResponseUsable(res!);
       } catch (err) {
+        // console.log(err, axios.isCancel(err), err instanceof AxiosError);
         if (bypass) return { status: 400, data: { message: 'UNKNWON_ERROR' } };
+
+        if (axios.isCancel(err)) {
+          return {
+            status: 500,
+            data: { message: err.message },
+          };
+        }
 
         if (err instanceof AxiosError) {
           if (err.response?.data) {

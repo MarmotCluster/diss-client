@@ -7,7 +7,8 @@ const API = {
   USER: {
     me: `/get-me`,
   },
-  scan: `/scan`,
+  scan: `/scan_injection`,
+  scan2: `/scan_traversal`,
 };
 
 export default API;

@@ -13,6 +13,7 @@ import {
   Checkbox,
   FormGroup,
   FormControlLabel,
+  Switch,
 } from '@mui/material';
 import React, { FormEventHandler, useState } from 'react';
 
@@ -26,6 +27,9 @@ import { useRecoilState } from 'recoil';
 import { globalState } from '../../stores/global/atom';
 import { useNavigate } from 'react-router-dom';
 import InjectionOnline from '../../components/InjectionOnline';
+import PathTraversalOnline from '../../components/PathTraversalOnline';
+import axios from 'axios';
+import { scanResultState } from '../../stores/scanResult/atom';
 
 type Http = 'http' | 'https';
 
@@ -33,9 +37,12 @@ const Home = () => {
   const navigate = useNavigate();
 
   const [global, setGlobal] = useRecoilState(globalState);
+  const [result, setResult] = useRecoilState(scanResultState);
 
   const [http, setHttp] = useState<Http>('https');
   const [url, setUrl] = useState<string>('');
+  const [permission, setPermission] = useState(false);
+  const [scanType, setScanType] = useState(false);
 
   const { search } = useScan();
 
@@ -43,12 +50,22 @@ const Home = () => {
     e.preventDefault();
     // console.log({ http, url });
     if (url.length > 0) {
+      if (!permission) {
+        toast('You must have permission to scan target site.', { icon: '⚠️' });
+        return;
+      }
       try {
         setGlobal((v) => ({ ...v, loading: true }));
-        const res = await search(`${http}://${url}`);
-        if (res.status > 400) {
+        let res;
+        if (!scanType) {
+          res = await search.injection(`${http}://${url}`);
+        } else {
+          res = await search.traversal(`${http}://${url}`);
+        }
+        if (res.status >= 400) {
           toast.error(getErrorMessage(res.data));
         } else {
+          setResult([...res.data]);
           navigate(`/result/${res.data.resultLink}`); // 응답 데이터는 resultLink로 리다이렉트할 링크를 전송하도록 임의 채택
         }
       } catch (err) {
@@ -70,7 +87,15 @@ const Home = () => {
           alignItems: 'center',
         }}
       >
-        <InjectionOnline />
+        <Box display="flex" alignItems="center" sx={{ mb: 8 }}>
+          {!scanType ? <InjectionOnline /> : <PathTraversalOnline />}
+          <Switch
+            value={scanType}
+            onChange={(e) => setScanType(e.target.checked)}
+            sx={{ transform: 'rotate(90deg)' }}
+          />
+        </Box>
+
         <Paper
           component="form"
           sx={{
@@ -118,7 +143,10 @@ const Home = () => {
           </IconButton>
         </Paper>
         <FormGroup sx={{ color: '#111' }}>
-          <FormControlLabel control={<Checkbox />} label="i have permission to scan this site." />
+          <FormControlLabel
+            control={<Checkbox value={permission} onChange={(e) => setPermission(e.target.checked)} />}
+            label="i have permission to scan this site."
+          />
         </FormGroup>
       </Box>
     </Container>

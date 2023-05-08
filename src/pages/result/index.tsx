@@ -2,9 +2,49 @@ import React from 'react';
 import { Container, Box, Typography, Button } from '@mui/material';
 import InjectionOnline from '../../components/InjectionOnline';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { scanResultState } from '../../stores/scanResult/atom';
+import PathTraversalOnline from '../../components/PathTraversalOnline';
 
 const ScanResult = (props: any) => {
   const navigate = useNavigate();
+
+  const [result, setResult] = useRecoilState(scanResultState);
+
+  const renderLogo = () => {
+    if (result.length > 0 && result[0]?.scanType === 'Path traversal') {
+      return <PathTraversalOnline />;
+    }
+
+    return <InjectionOnline />;
+  };
+
+  const renderScannedResult = () => {
+    if (result.length > 0) {
+      return result.map((item, index) => {
+        const { scanPayload } = item;
+
+        return (
+          <Box sx={{ p: 3, height: 'auto' }}>
+            <Typography>* Found Attack {index + 1}</Typography>
+            <Box
+              sx={{
+                mt: 2,
+                p: 2,
+                bgcolor: '#373737',
+                borderRadius: 2,
+                color: 'white',
+              }}
+            >
+              <Typography variant="body2">{scanPayload ? scanPayload : `<input type="text" ....`}</Typography>
+            </Box>
+          </Box>
+        );
+      });
+    }
+
+    return null;
+  };
 
   return (
     <>
@@ -19,9 +59,10 @@ const ScanResult = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <InjectionOnline />
+          {renderLogo()}
           <Box
             sx={{
+              mt: 2,
               borderRadius: 2,
               bgcolor: '#fff',
               border: '1px solid #c2c2c2',
@@ -31,7 +72,9 @@ const ScanResult = (props: any) => {
               textAlign: 'center',
             }}
           >
-            <Typography>https://example.com</Typography>
+            <Typography>
+              {result.length > 0 && result[0]?.scanURL ? result[0].scanURL : `https://example.com`}
+            </Typography>
             <Box sx={{ my: 4, width: '100%', '& > *:not(:first-child)': { mt: 2 } }}>
               <Box sx={{ width: '50%', height: 3, bgcolor: '#c2c2c2' }} />
               <Box sx={{ width: `calc(50% - 4rem)`, height: 3, bgcolor: '#c2c2c2' }} />
@@ -51,34 +94,7 @@ const ScanResult = (props: any) => {
             // border: '1px solid black',
           }}
         ></Box>
-        <Box sx={{ p: 3, height: 'auto' }}>
-          <Typography>* Found Attack 1</Typography>
-          <Box
-            sx={{
-              mt: 2,
-              p: 2,
-              bgcolor: '#373737',
-              borderRadius: 2,
-              color: 'white',
-            }}
-          >
-            <Typography variant="body2">{`<input type="text" ....`}</Typography>
-          </Box>
-        </Box>
-        <Box sx={{ p: 3, pt: 0, height: 'auto' }}>
-          <Typography>* Found Attack 2</Typography>
-          <Box
-            sx={{
-              mt: 2,
-              p: 2,
-              bgcolor: '#373737',
-              borderRadius: 2,
-              color: 'white',
-            }}
-          >
-            <Typography variant="body2">{`<input type="text" ....`}</Typography>
-          </Box>
-        </Box>
+        {renderScannedResult()}
         <Box
           sx={{
             position: 'absolute',
@@ -99,6 +115,7 @@ const ScanResult = (props: any) => {
             boxShadow: '0px 8px 20px rgba(0,0,0,0.16)',
             p: 2,
             pt: 8,
+            mb: 4,
             width: '100%',
             textAlign: 'center',
           }}
