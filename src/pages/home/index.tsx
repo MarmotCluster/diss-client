@@ -14,6 +14,7 @@ import {
   FormGroup,
   FormControlLabel,
   Switch,
+  Tab,
 } from '@mui/material';
 import React, { FormEventHandler, useState } from 'react';
 
@@ -26,10 +27,13 @@ import { getErrorMessage } from '../../utils';
 import { useRecoilState } from 'recoil';
 import { globalState } from '../../stores/global/atom';
 import { useNavigate } from 'react-router-dom';
-import InjectionOnline from '../../components/InjectionOnline';
+import XSSInjectionOnline from '../../components/XSSInjectionOnline';
 import PathTraversalOnline from '../../components/PathTraversalOnline';
 import axios from 'axios';
 import { scanResultState } from '../../stores/scanResult/atom';
+import OSCommandInjectionOnline from '../../components/OSCommandInjectionOnline';
+import { TabContext } from '@mui/lab';
+import TabList from '@mui/lab/TabList';
 
 type Http = 'http' | 'https';
 
@@ -42,7 +46,7 @@ const Home = () => {
   const [http, setHttp] = useState<Http>('https');
   const [url, setUrl] = useState<string>('');
   const [permission, setPermission] = useState(false);
-  const [scanType, setScanType] = useState(false);
+  const [scanType, setScanType] = useState<'xss' | 'traversal' | 'oscommand'>('xss');
 
   const { search } = useScan();
 
@@ -57,11 +61,18 @@ const Home = () => {
       try {
         setGlobal((v) => ({ ...v, loading: true }));
         let res;
-        if (!scanType) {
-          res = await search.injection(`${http}://${url}`);
-        } else {
-          res = await search.traversal(`${http}://${url}`);
+        switch (scanType) {
+          case 'xss':
+            res = await search.injection(`${http}://${url}`);
+            break;
+          case 'traversal':
+            res = await search.traversal(`${http}://${url}`);
+            break;
+          case 'oscommand':
+            res = await search.oscommand(`${http}://${url}`);
+            break;
         }
+
         if (res.status >= 400) {
           toast.error(getErrorMessage(res.data));
         } else {
@@ -72,6 +83,17 @@ const Home = () => {
       } finally {
         setGlobal((v) => ({ ...v, loading: false }));
       }
+    }
+  };
+
+  const renderLogo = () => {
+    switch (scanType) {
+      case 'xss':
+        return <XSSInjectionOnline />;
+      case 'traversal':
+        return <PathTraversalOnline />;
+      case 'oscommand':
+        return <OSCommandInjectionOnline />;
     }
   };
 
@@ -87,13 +109,22 @@ const Home = () => {
           alignItems: 'center',
         }}
       >
-        <Box display="flex" alignItems="center" sx={{ mb: 8 }}>
-          {!scanType ? <InjectionOnline /> : <PathTraversalOnline />}
-          <Switch
+        <TabContext value={scanType}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <TabList onChange={(e, newValue) => setScanType(newValue)} sx={{ fontSize: 12 }}>
+              <Tab label="xss" value="xss" />
+              <Tab label="traversal" value="traversal" />
+              <Tab label="oscommand" value="oscommand" />
+            </TabList>
+          </Box>
+        </TabContext>
+        <Box display="flex" alignItems="center" sx={{ mb: 8, textAlign: 'center' }}>
+          {renderLogo()}
+          {/* <Switch
             value={scanType}
             onChange={(e) => setScanType(e.target.checked)}
             sx={{ transform: 'rotate(90deg)' }}
-          />
+          /> */}
         </Box>
 
         <Paper

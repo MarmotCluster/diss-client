@@ -9,6 +9,7 @@ const API = {
   },
   scan: `/scan_injection`,
   scan2: `/scan_traversal`,
+  scan3: `/scan_command`,
 };
 
 export default API;

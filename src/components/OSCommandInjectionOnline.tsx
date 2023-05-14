@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-const InjectionOnline = () => {
+const OSCommandInjectionOnline = () => {
   return (
     <Typography
       sx={{
@@ -17,9 +17,9 @@ const InjectionOnline = () => {
         userSelect: 'none',
       }}
     >
-      Injection Online
+      OSCommand Injection Online
     </Typography>
   );
 };
 
-export default InjectionOnline;
+export default OSCommandInjectionOnline;

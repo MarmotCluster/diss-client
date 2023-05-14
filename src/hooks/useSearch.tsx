@@ -48,6 +48,13 @@ const useScan = () => {
         return getResponseUsable(res);
       });
     },
+    oscommand: async (url: string) => {
+      setCancelComponent();
+      return await tryCatchResponse(async () => {
+        const res = await refresh(REST.POST, API.scan3, { data: { href: url }, cancelToken: source.token });
+        return getResponseUsable(res);
+      });
+    },
   };
 
   const cancelSearchRequest = () => {

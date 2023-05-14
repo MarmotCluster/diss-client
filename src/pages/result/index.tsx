@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Box, Typography, Button } from '@mui/material';
-import InjectionOnline from '../../components/InjectionOnline';
+import XSSInjectionOnline from '../../components/XSSInjectionOnline';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { scanResultState } from '../../stores/scanResult/atom';
@@ -16,7 +16,7 @@ const ScanResult = (props: any) => {
       return <PathTraversalOnline />;
     }
 
-    return <InjectionOnline />;
+    return <XSSInjectionOnline />;
   };
 
   const renderScannedResult = () => {
