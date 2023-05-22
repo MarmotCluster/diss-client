@@ -34,6 +34,7 @@ import { scanResultState } from '../../stores/scanResult/atom';
 import OSCommandInjectionOnline from '../../components/OSCommandInjectionOnline';
 import { TabContext } from '@mui/lab';
 import TabList from '@mui/lab/TabList';
+import { ScanTypes } from '../../types';
 
 type Http = 'http' | 'https';
 
@@ -46,7 +47,7 @@ const Home = () => {
   const [http, setHttp] = useState<Http>('https');
   const [url, setUrl] = useState<string>('');
   const [permission, setPermission] = useState(false);
-  const [scanType, setScanType] = useState<'xss' | 'traversal' | 'oscommand'>('xss');
+  const [scanType, setScanType] = useState<ScanTypes>('Reflected XSS');
 
   const { search } = useScan();
 
@@ -62,13 +63,13 @@ const Home = () => {
         setGlobal((v) => ({ ...v, loading: true }));
         let res;
         switch (scanType) {
-          case 'xss':
+          case 'Reflected XSS':
             res = await search.injection(`${http}://${url}`);
             break;
-          case 'traversal':
+          case 'Path Traversal':
             res = await search.traversal(`${http}://${url}`);
             break;
-          case 'oscommand':
+          case 'OS Command Injection':
             res = await search.oscommand(`${http}://${url}`);
             break;
         }
@@ -88,11 +89,11 @@ const Home = () => {
 
   const renderLogo = () => {
     switch (scanType) {
-      case 'xss':
+      case 'Reflected XSS':
         return <XSSInjectionOnline />;
-      case 'traversal':
+      case 'Path Traversal':
         return <PathTraversalOnline />;
-      case 'oscommand':
+      case 'OS Command Injection':
         return <OSCommandInjectionOnline />;
     }
   };
@@ -112,9 +113,9 @@ const Home = () => {
         <TabContext value={scanType}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={(e, newValue) => setScanType(newValue)} sx={{ fontSize: 12 }}>
-              <Tab label="xss" value="xss" />
-              <Tab label="traversal" value="traversal" />
-              <Tab label="oscommand" value="oscommand" />
+              {['Reflected XSS', 'Path Traversal', 'OS Command Injection'].map((item, index) => (
+                <Tab key={index} label={item} value={item} />
+              ))}
             </TabList>
           </Box>
         </TabContext>
