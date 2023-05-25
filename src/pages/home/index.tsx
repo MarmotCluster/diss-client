@@ -15,6 +15,9 @@ import {
   FormControlLabel,
   Switch,
   Tab,
+  FormLabel,
+  RadioGroup,
+  Radio,
 } from '@mui/material';
 import React, { FormEventHandler, useState } from 'react';
 
@@ -34,7 +37,7 @@ import { scanResultState } from '../../stores/scanResult/atom';
 import OSCommandInjectionOnline from '../../components/OSCommandInjectionOnline';
 import { TabContext } from '@mui/lab';
 import TabList from '@mui/lab/TabList';
-import { ScanTypes } from '../../types';
+import { ScanTypes, XSSOption } from '../../types';
 
 type Http = 'http' | 'https';
 
@@ -48,6 +51,7 @@ const Home = () => {
   const [url, setUrl] = useState<string>('');
   const [permission, setPermission] = useState(false);
   const [scanType, setScanType] = useState<ScanTypes>('Reflected XSS');
+  const [xssOption, setXssOption] = useState<XSSOption>('fast');
 
   const { search } = useScan();
 
@@ -64,7 +68,7 @@ const Home = () => {
         let res;
         switch (scanType) {
           case 'Reflected XSS':
-            res = await search.injection(`${http}://${url}`);
+            res = await search.injection(`${http}://${url}`, xssOption);
             break;
           case 'Path Traversal':
             res = await search.traversal(`${http}://${url}`);
@@ -90,7 +94,32 @@ const Home = () => {
   const renderLogo = () => {
     switch (scanType) {
       case 'Reflected XSS':
-        return <XSSInjectionOnline />;
+        return (
+          <>
+            <Box>
+              <XSSInjectionOnline />
+              <FormControl>
+                <FormLabel id="demo-radio-buttons-group-label">Scan Options</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  defaultValue="female"
+                  name="radio-buttons-group"
+                  value={xssOption}
+                >
+                  {['fast', 'accurate'].map((item, index) => (
+                    <FormControlLabel
+                      key={index}
+                      value={item}
+                      control={<Radio onChange={(e) => setXssOption(item as XSSOption)} />}
+                      label={item}
+                    />
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            </Box>
+          </>
+        );
       case 'Path Traversal':
         return <PathTraversalOnline />;
       case 'OS Command Injection':
