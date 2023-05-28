@@ -32,6 +32,8 @@ const useAuth = () => {
 
       setAuth((state) => ({ ...state, isSignedIn: true }));
 
+      window.localStorage.setItem('accessToken', res.data.token!);
+
       return getResponseUsable(res);
     } catch (err) {
       if (err instanceof AxiosError) {

@@ -60,7 +60,12 @@ export const getErrorMessage = (responseData: any) => {
 export const refresh = (
   method: 'get' | 'post' | 'put' | 'delete',
   address: string,
-  config: { data?: any; header?: AxiosRequestConfig['headers']; cancelToken?: AxiosRequestConfig['cancelToken'] }
+  config: {
+    params?: AxiosRequestConfig['params'];
+    data?: any;
+    header?: AxiosRequestConfig['headers'];
+    cancelToken?: AxiosRequestConfig['cancelToken'];
+  }
 ) => {
   const fetchData = async (bypass: boolean = false): Promise<any> => {
     const storedToken = window.localStorage.getItem('accessToken');

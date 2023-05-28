@@ -1,11 +1,5 @@
 import { atom } from 'recoil';
-
-interface ScanResult {
-  id: number;
-  scanType: string;
-  scanURL: string;
-  scanPayload: string;
-}
+import { ScanResult } from '../../types';
 
 export const scanResultState = atom<ScanResult[]>({
   key: 'scanResultState',

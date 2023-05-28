@@ -62,7 +62,14 @@ const useScan = () => {
     source.cancel('Canceled.');
   };
 
-  return { search, cancelSearchRequest };
+  const getResult = async (postId: number) => {
+    return await tryCatchResponse(async () => {
+      const res = await refresh(REST.GET, API.SEARCH.result, { params: { postId } });
+      return getResponseUsable(res);
+    });
+  };
+
+  return { search, cancelSearchRequest, getResult };
 };
 
 export default useScan;

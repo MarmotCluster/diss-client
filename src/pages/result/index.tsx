@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Box, Typography, Button } from '@mui/material';
 import XSSInjectionOnline from '../../components/XSSInjectionOnline';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { scanResultState } from '../../stores/scanResult/atom';
 import PathTraversalOnline from '../../components/PathTraversalOnline';
+import useSearch from '../../hooks/useSearch';
 
 const ScanResult = (props: any) => {
   const navigate = useNavigate();
+
+  const { id } = useParams();
+
+  const { getResult } = useSearch();
 
   const [result, setResult] = useRecoilState(scanResultState);
 
@@ -25,7 +30,7 @@ const ScanResult = (props: any) => {
         const { scanPayload } = item;
 
         return (
-          <Box sx={{ p: 3, height: 'auto' }}>
+          <Box sx={{ p: 3, height: 'auto' }} key={index}>
             <Typography>* Found Attack {index + 1}</Typography>
             <Box
               sx={{
@@ -45,6 +50,16 @@ const ScanResult = (props: any) => {
 
     return null;
   };
+
+  useEffect(() => {
+    // server.get('/result_data').then((res) => console.log(res));
+    console.log(id);
+    const init = async () => {
+      const res = await getResult(Number(id));
+    };
+
+    init();
+  }, []);
 
   return (
     <>
