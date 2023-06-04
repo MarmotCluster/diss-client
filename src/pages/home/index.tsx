@@ -18,6 +18,7 @@ import {
   FormLabel,
   RadioGroup,
   Radio,
+  Tooltip,
 } from '@mui/material';
 import React, { FormEventHandler, useState } from 'react';
 
@@ -94,6 +95,23 @@ const Home = () => {
   const renderLogo = () => {
     switch (scanType) {
       case 'Reflected XSS':
+        const renderOptions = () => {
+          const options = {
+            fast: 'able to reduce time scanning.',
+            accurate: 'uses advanced solution. may takes long time.',
+          };
+
+          return Object.keys(options).map((item, index) => (
+            <Tooltip title={options[item as keyof typeof options]}>
+              <FormControlLabel
+                key={index}
+                value={item}
+                control={<Radio onChange={(e) => setXssOption(item as XSSOption)} />}
+                label={item}
+              />
+            </Tooltip>
+          ));
+        };
         return (
           <>
             <Box>
@@ -107,14 +125,7 @@ const Home = () => {
                   name="radio-buttons-group"
                   value={xssOption}
                 >
-                  {['fast', 'accurate'].map((item, index) => (
-                    <FormControlLabel
-                      key={index}
-                      value={item}
-                      control={<Radio onChange={(e) => setXssOption(item as XSSOption)} />}
-                      label={item}
-                    />
-                  ))}
+                  {renderOptions()}
                 </RadioGroup>
               </FormControl>
             </Box>
@@ -163,7 +174,8 @@ const Home = () => {
             p: '2px 4px',
             display: 'flex',
             alignItems: 'center',
-            width: 480,
+            maxWidth: 480,
+            width: '100%',
             boxShadow: '0px 8px 20px rgba(0,0,0,0.18)',
             border: '1px solid #f4f4f4',
           }}
@@ -198,6 +210,7 @@ const Home = () => {
             inputProps={{ 'aria-label': 'www.example.com/' }}
             value={url}
             onChange={(e) => setUrl(e.target.value)}
+            fullWidth
           />
           <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
             <SearchIcon />

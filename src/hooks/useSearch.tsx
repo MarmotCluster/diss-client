@@ -5,7 +5,7 @@ import { getResponseUsable, refresh, REST, tryCatchResponse } from '../utils';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { globalState } from '../stores/global/atom';
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import { XSSOption } from '../types';
 
 type SearchType = 'injection' | 'traversal';
@@ -15,6 +15,8 @@ const useScan = () => {
 
   const source = axios.CancelToken.source();
 
+  const theme = useTheme();
+
   const setCancelComponent = () => {
     setGlobal((v) => ({
       ...v,
@@ -22,6 +24,8 @@ const useScan = () => {
         return (
           <Button
             variant="contained"
+            color={'inherit'}
+            sx={{ color: theme.palette.primary.main }}
             onClick={() => {
               cancelSearchRequest();
               setGlobal((state) => ({ ...state, loading: false }));
