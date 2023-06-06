@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import zIndex from '@mui/material/styles/zIndex';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Link as RouterLink } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -11,8 +11,29 @@ import { globalState } from '../../stores/global/atom';
 import { authState } from '../../stores/auth/atom';
 
 const Header = () => {
+  /* recoils */
   const [auth, setAuth] = useRecoilState(authState);
   const [global, setGlobal] = useRecoilState(globalState);
+
+  /* states */
+  const [shadow, setShadow] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = (e: Event) => {
+      // console.log(window.pageYOffset);
+      if (window.pageYOffset > 0) {
+        setShadow(true);
+      } else {
+        setShadow(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [shadow]);
 
   return (
     <Box
@@ -25,6 +46,8 @@ const Header = () => {
         left: 0,
         zIndex: zIndex.appBar,
         px: 2,
+        transition: 'box-shadow .2s ease',
+        boxShadow: shadow ? '0px 4px 20px rgba(0,0,0,0.16)' : undefined,
       }}
     >
       <Grid container height="100%" alignItems="center" justifyContent="space-between">

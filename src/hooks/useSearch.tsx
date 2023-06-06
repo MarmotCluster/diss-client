@@ -68,7 +68,7 @@ const useScan = () => {
 
   const getResult = async (postId: number) => {
     return await tryCatchResponse(async () => {
-      const res = await refresh(REST.GET, API.SEARCH.result, { params: { postId } });
+      const res = await refresh(REST.GET, API.SEARCH.result + `/${postId}`, {});
       return getResponseUsable(res);
     });
   };
