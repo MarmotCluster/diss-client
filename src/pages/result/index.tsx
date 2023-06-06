@@ -56,6 +56,10 @@ const ScanResult = (props: any) => {
     console.log(id);
     const init = async () => {
       const res = await getResult(Number(id));
+
+      if (res.status === 200) {
+        setResult(res.data);
+      }
     };
 
     init();
