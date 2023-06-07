@@ -39,12 +39,15 @@ import OSCommandInjectionOnline from '../../components/OSCommandInjectionOnline'
 import { TabContext } from '@mui/lab';
 import TabList from '@mui/lab/TabList';
 import { ScanTypes, XSSOption } from '../../types';
+import zIndex from '@mui/material/styles/zIndex';
+import { authState } from '../../stores/auth/atom';
 
 type Http = 'http' | 'https';
 
 const Home = () => {
   const navigate = useNavigate();
 
+  const [auth, setAuth] = useRecoilState(authState);
   const [global, setGlobal] = useRecoilState(globalState);
   const [result, setResult] = useRecoilState(scanResultState);
 
@@ -58,7 +61,9 @@ const Home = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    // console.log({ http, url });
+
+    if (!auth.isSignedIn) return;
+
     if (url.length > 0) {
       if (!permission) {
         toast('You must have permission to scan target site.', { icon: '⚠️' });
@@ -178,9 +183,37 @@ const Home = () => {
             width: '100%',
             boxShadow: '0px 8px 20px rgba(0,0,0,0.18)',
             border: '1px solid #f4f4f4',
+            position: 'relative',
           }}
           onSubmit={(e) => handleSubmit(e)}
         >
+          {!auth.isSignedIn && (
+            <Box
+              sx={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                bgcolor: 'rgba(255,255,255,0.8)',
+                top: 0,
+                left: 0,
+                zIndex: 1,
+                borderRadius: '4px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                opacity: 0,
+                transition: 'opacity .2s ease',
+                userSelect: 'none',
+                cursor: 'pointer',
+                '&:hover': {
+                  opacity: 1,
+                },
+              }}
+              onClick={(e) => navigate('/login')}
+            >
+              <Typography variant="body2">You need to login to use our service.</Typography>
+            </Box>
+          )}
           <FormControl>
             <Select
               labelId="demo-simple-select-label"
@@ -198,6 +231,7 @@ const Home = () => {
               }}
               onChange={(e) => setHttp(e.target.value as Http)}
               value={http}
+              tabIndex={auth.isSignedIn ? undefined : -1}
             >
               <MenuItem value={'http'}>HTTP</MenuItem>
               <MenuItem value={'https'}>HTTPS</MenuItem>
@@ -211,8 +245,9 @@ const Home = () => {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             fullWidth
+            tabIndex={auth.isSignedIn ? undefined : -1}
           />
-          <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+          <IconButton type="submit" sx={{ p: '10px' }} aria-label="search" tabIndex={auth.isSignedIn ? undefined : -1}>
             <SearchIcon />
           </IconButton>
         </Paper>
