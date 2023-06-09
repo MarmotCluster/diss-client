@@ -31,7 +31,7 @@ const ScanResult = (props: any) => {
 
         return (
           <Box sx={{ p: 3, height: 'auto' }} key={index}>
-            <Typography>* Found Attack {index + 1}</Typography>
+            <Typography>* Found Vulnerability {index + 1}</Typography>
             <Box
               sx={{
                 mt: 2,
@@ -41,6 +41,9 @@ const ScanResult = (props: any) => {
                 color: 'white',
               }}
             >
+              <Typography variant="body2" sx={{ color: '#999' }}>
+                {item.scanURL}
+              </Typography>
               <Typography variant="body2">{scanPayload ? scanPayload : `<input type="text" ....`}</Typography>
             </Box>
           </Box>
