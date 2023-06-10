@@ -1,7 +1,7 @@
 import React from 'react';
-import { Typography } from '@mui/material';
+import { Typography, SxProps, Theme } from '@mui/material';
 
-const MainLogo = () => {
+const MainLogo = (props?: { sx?: SxProps<Theme> }) => {
   return (
     <Typography
       sx={{
@@ -15,6 +15,7 @@ const MainLogo = () => {
         WebkitTextFillColor: 'transparent',
         backgroundClip: 'text',
         userSelect: 'none',
+        ...props?.sx,
       }}
     >
       DISS

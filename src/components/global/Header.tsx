@@ -9,6 +9,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { globalState } from '../../stores/global/atom';
 import { authState } from '../../stores/auth/atom';
+import MainLogo from '../MainLogo';
 
 const Header = () => {
   /* recoils */
@@ -53,7 +54,8 @@ const Header = () => {
       <Grid container height="100%" alignItems="center" justifyContent="space-between">
         <Grid item>
           <Button component={RouterLink} to="/">
-            <span style={{ fontFamily: 'inherit' }}>Diss</span>
+            {/* <span style={{ fontFamily: 'inherit' }}>Diss</span> */}
+            <MainLogo sx={{ fontSize: 18 }} />
           </Button>
         </Grid>
         {!auth.isSignedIn && (

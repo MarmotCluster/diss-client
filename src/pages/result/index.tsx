@@ -43,7 +43,7 @@ const ScanResult = (props: any) => {
               }}
             >
               <Typography variant="body2" sx={{ color: '#999' }}>
-                {item.inputURL!}
+                {item.scanURL}
               </Typography>
               <Typography variant="body2">{scanPayload ? scanPayload : `<input type="text" ....`}</Typography>
             </Box>
@@ -75,10 +75,8 @@ const ScanResult = (props: any) => {
         <Box
           sx={{
             width: '100%',
-            // minHeight: 'calc(100vh - 8rem)',
             display: 'flex',
             flexDirection: 'column',
-            //   justifyContent: 'center',
             alignItems: 'center',
           }}
         >
@@ -97,7 +95,10 @@ const ScanResult = (props: any) => {
             }}
           >
             <Typography>
-              {result.length > 0 && result[0]?.scanURL ? result[0].scanURL : `https://example.com`}
+              {result.length > 0 && result[0]?.inputURL ? result[0].inputURL : `https://example.com`}
+            </Typography>
+            <Typography sx={{ color: '#999' }} variant="body2">
+              Type : {result.length > 0 ? result[0].scanType : 'Unknown'}
             </Typography>
             <Box sx={{ my: 4, width: '100%', '& > *:not(:first-child)': { mt: 2 } }}>
               <Box sx={{ width: '50%', height: 3, bgcolor: '#c2c2c2' }} />
