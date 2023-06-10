@@ -107,9 +107,8 @@ const Home = () => {
           };
 
           return Object.keys(options).map((item, index) => (
-            <Tooltip title={options[item as keyof typeof options]}>
+            <Tooltip key={index} title={options[item as keyof typeof options]}>
               <FormControlLabel
-                key={index}
                 value={item}
                 control={<Radio onChange={(e) => setXssOption(item as XSSOption)} />}
                 label={item}

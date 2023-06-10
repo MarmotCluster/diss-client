@@ -56,11 +56,13 @@ const Header = () => {
             <span style={{ fontFamily: 'inherit' }}>Diss</span>
           </Button>
         </Grid>
-        <Grid item>
-          <Button component={RouterLink} to="/login">
-            Sign in
-          </Button>
-        </Grid>
+        {!auth.isSignedIn && (
+          <Grid item>
+            <Button component={RouterLink} to="/login">
+              Sign in
+            </Button>
+          </Grid>
+        )}
         {auth.isSignedIn && (
           <Grid item>
             <IconButton>

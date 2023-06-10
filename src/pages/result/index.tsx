@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { scanResultState } from '../../stores/scanResult/atom';
 import PathTraversalOnline from '../../components/PathTraversalOnline';
 import useSearch from '../../hooks/useSearch';
+import MainLogo from '../../components/MainLogo';
 
 const ScanResult = (props: any) => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const ScanResult = (props: any) => {
               }}
             >
               <Typography variant="body2" sx={{ color: '#999' }}>
-                {item.scanURL}
+                {item.inputURL!}
               </Typography>
               <Typography variant="body2">{scanPayload ? scanPayload : `<input type="text" ....`}</Typography>
             </Box>
@@ -81,7 +82,8 @@ const ScanResult = (props: any) => {
             alignItems: 'center',
           }}
         >
-          {renderLogo()}
+          {/* {renderLogo()} */}
+          <MainLogo />
           <Box
             sx={{
               mt: 2,
