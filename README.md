@@ -12,8 +12,15 @@ client for xss scanner online
 
 - ~~consider using `socket.io` for rendering progress while searching attack vulnerabilities.~~ DISMISSED in May 1
 
-# extra features
+## Jun 2023
+
+- consider using `socket.io` for rendering progress while searching
+
+# more features
 
 ## May 2023
 
 - Separated scan options as a couple of: XSS Injection and Path Traversal
+
+- separated search options as a bunch of:
+  XSS Injection | Path Traversal | OS Command
