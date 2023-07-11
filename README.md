@@ -24,3 +24,7 @@ client for xss scanner online
 
 - separated search options as a bunch of:
   XSS Injection | Path Traversal | OS Command
+
+## Jul 2023
+
+- fixed pointing null not right accessToken received from server.

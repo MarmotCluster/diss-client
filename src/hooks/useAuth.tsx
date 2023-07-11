@@ -25,14 +25,14 @@ const useAuth = () => {
     try {
       const res = await server.post(API.AUTH.login, { email, password });
 
-      window.localStorage.setItem('accessToken', res.data.access_token);
+      // window.localStorage.setItem('accessToken', res.data.access_token);
+      window.localStorage.setItem('accessToken', res.data.data.token!);
+
       if (remeberMe) {
         window.localStorage.setItem('refreshToken', res.data.refresh_token);
       }
 
       setAuth((state) => ({ ...state, isSignedIn: true }));
-
-      window.localStorage.setItem('accessToken', res.data.token!);
 
       return getResponseUsable(res);
     } catch (err) {

@@ -42,6 +42,7 @@ const Login = () => {
 
       setGlobal((v) => ({ ...v, loading: true }));
       const res = await login(form);
+      console.log(res);
       simpler.showToastError(res, () => navigate('/'));
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
