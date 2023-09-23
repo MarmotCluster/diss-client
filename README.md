@@ -8,15 +8,23 @@ client for xss scanner online
 
 # faced issues
 
-## Apr 2023
-
-- ~~consider using `socket.io` for rendering progress while searching attack vulnerabilities.~~ DISMISSED in May 1
-
 ## Jun 2023
 
 - consider using `socket.io` for rendering progress while searching
 
+## Apr 2023
+
+- ~~consider using `socket.io` for rendering progress while searching attack vulnerabilities.~~ DISMISSED in May 1
+
 # more features
+
+## Sep 2023
+
+- added selectable type in scan xss injection option.
+
+## Jul 2023
+
+- fixed pointing null not right accessToken received from server.
 
 ## May 2023
 
@@ -24,7 +32,3 @@ client for xss scanner online
 
 - separated search options as a bunch of:
   XSS Injection | Path Traversal | OS Command
-
-## Jul 2023
-
-- fixed pointing null not right accessToken received from server.

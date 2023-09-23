@@ -1,4 +1,6 @@
-export type ScanTypes = 'Reflected XSS' | 'Path Traversal' | 'OS Command Injection';
+export type ScanTypes = 'XSS Injection' | 'Path Traversal' | 'OS Command Injection';
+
+export type XSSType = 'reflection' | 'stored';
 
 export type XSSOption = 'fast' | 'accurate';
 

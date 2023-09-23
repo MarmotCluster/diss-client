@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { globalState } from '../stores/global/atom';
 import { Button, useTheme } from '@mui/material';
-import { XSSOption } from '../types';
+import { XSSOption, XSSType } from '../types';
 
 type SearchType = 'injection' | 'traversal';
 
@@ -39,10 +39,13 @@ const useScan = () => {
   };
 
   const search = {
-    injection: async (url: string, option: XSSOption) => {
+    injection: async (url: string, type: XSSType, option: XSSOption) => {
       setCancelComponent();
       return await tryCatchResponse(async () => {
-        const res = await refresh(REST.POST, API.scan, { data: { href: url, option }, cancelToken: source.token });
+        const res = await refresh(REST.POST, API.scan, {
+          data: { href: url, type, option },
+          cancelToken: source.token,
+        });
         return getResponseUsable(res);
       });
     },
