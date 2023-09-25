@@ -21,6 +21,7 @@ client for xss scanner online
 ## Sep 2023
 
 - added selectable type in scan xss injection option.
+- seperated as a couple of result pages for server-side.
 
 ## Jul 2023
 

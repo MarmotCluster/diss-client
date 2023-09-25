@@ -26,7 +26,11 @@ const navigation: Navigation[] = [
     element: <ScanResult />,
   },
   {
-    path: '/scan_injection_success',
+    path: '/scan_stored_injection_success',
+    element: <DummySucceeds />,
+  },
+  {
+    path: '/scan_reflected_injection_success',
     element: <DummySucceeds />,
   },
 ];
