@@ -10,6 +10,7 @@ import { useRecoilState } from 'recoil';
 import { globalState } from '../../stores/global/atom';
 import { authState } from '../../stores/auth/atom';
 import MainLogo from '../MainLogo';
+import PopupMenu from '../header/PopupMenu';
 
 const Header = () => {
   /* recoils */
@@ -18,6 +19,11 @@ const Header = () => {
 
   /* states */
   const [shadow, setShadow] = useState(false);
+
+  const [anchor, setAnchor] = useState<HTMLButtonElement | null>(null);
+
+  /* dynamic constants */
+  const id = anchor ? 'simple-popover' : undefined;
 
   useEffect(() => {
     const handleScroll = (e: Event) => {
@@ -37,43 +43,46 @@ const Header = () => {
   }, [shadow]);
 
   return (
-    <Box
-      sx={{
-        bgcolor: 'white',
-        width: '100%',
-        height: 60,
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        zIndex: zIndex.appBar,
-        px: 2,
-        transition: 'box-shadow .2s ease',
-        boxShadow: shadow ? '0px 4px 20px rgba(0,0,0,0.16)' : undefined,
-      }}
-    >
-      <Grid container height="100%" alignItems="center" justifyContent="space-between">
-        <Grid item>
-          <Button component={RouterLink} to="/">
-            {/* <span style={{ fontFamily: 'inherit' }}>Diss</span> */}
-            <MainLogo sx={{ fontSize: 18 }} />
-          </Button>
-        </Grid>
-        {!auth.isSignedIn && (
+    <>
+      <Box
+        sx={{
+          bgcolor: 'white',
+          width: '100%',
+          height: 60,
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: zIndex.appBar,
+          px: 2,
+          transition: 'box-shadow .2s ease',
+          boxShadow: shadow ? '0px 4px 20px rgba(0,0,0,0.16)' : undefined,
+        }}
+      >
+        <Grid container height="100%" alignItems="center" justifyContent="space-between">
           <Grid item>
-            <Button component={RouterLink} to="/login">
-              Sign in
+            <Button component={RouterLink} to="/">
+              {/* <span style={{ fontFamily: 'inherit' }}>Diss</span> */}
+              <MainLogo sx={{ fontSize: 18 }} />
             </Button>
           </Grid>
-        )}
-        {auth.isSignedIn && (
-          <Grid item>
-            <IconButton>
-              <Avatar />
-            </IconButton>
-          </Grid>
-        )}
-      </Grid>
-    </Box>
+          {!auth.isSignedIn && (
+            <Grid item>
+              <Button component={RouterLink} to="/login">
+                Sign in
+              </Button>
+            </Grid>
+          )}
+          {auth.isSignedIn && (
+            <Grid item>
+              <IconButton aria-describedby={id} onClick={(e) => setAnchor(e.currentTarget)}>
+                <Avatar />
+              </IconButton>
+            </Grid>
+          )}
+        </Grid>
+      </Box>
+      <PopupMenu id={id} anchorState={[anchor, setAnchor]} />
+    </>
   );
 };
 

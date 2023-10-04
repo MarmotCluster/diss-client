@@ -7,15 +7,23 @@ import { scanResultState } from '../../stores/scanResult/atom';
 import PathTraversalOnline from '../../components/PathTraversalOnline';
 import useSearch from '../../hooks/useSearch';
 import MainLogo from '../../components/MainLogo';
+import { globalState } from '../../stores/global/atom';
+import toast from 'react-hot-toast';
 
 const ScanResult = (props: any) => {
+  /* hooks */
   const navigate = useNavigate();
 
   const { id } = useParams();
 
   const { getResult } = useSearch();
 
+  /* stores */
   const [result, setResult] = useRecoilState(scanResultState);
+
+  const [global, setGlobal] = useRecoilState(globalState);
+
+  /* renders */
 
   const renderLogo = () => {
     if (result.length > 0 && result[0]?.scanType === 'Path traversal') {
@@ -56,13 +64,17 @@ const ScanResult = (props: any) => {
   };
 
   useEffect(() => {
-    // server.get('/result_data').then((res) => console.log(res));
     console.log(id);
     const init = async () => {
-      const res = await getResult(Number(id));
-
-      if (res.status === 200) {
-        setResult(res.data);
+      setGlobal((v) => ({ ...v, loading: true }));
+      try {
+        const res = await getResult(Number(id));
+        if (res.status === 200) {
+          setResult(res.data);
+        }
+      } catch (err) {
+      } finally {
+        setGlobal((v) => ({ ...v, loading: false }));
       }
     };
 
@@ -81,7 +93,7 @@ const ScanResult = (props: any) => {
           }}
         >
           {/* {renderLogo()} */}
-          <MainLogo />
+          <MainLogo text="Reports" />
           <Box
             sx={{
               mt: 2,

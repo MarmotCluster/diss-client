@@ -14,39 +14,21 @@ const AuthContext = () => {
   const [auth, setAuth] = useRecoilState(authState);
 
   useEffect(() => {
-    // const onBeforeUnload = (e) => {
-    //   e.preventDefault();
-    //   e.returnValue = '';
-    // };
-
     const storedToken = window.localStorage.getItem('accessToken');
-    const hasLocationLastSlash = location.pathname[location.pathname.length - 1] === '/' && location.pathname !== '/';
-    // console.log(location.pathname);
-    // console.log(hasLocationLastSlash);
+    const locationFixed =
+      location.pathname[location.pathname.length - 1] === '/'
+        ? location.pathname.slice(0, location.pathname.length - 1)
+        : location.pathname;
 
-    if (hasLocationLastSlash) {
-      navigate(location.pathname.slice(0, location.pathname.length - 1));
+    if (storedToken) {
+      if (ACCESS_DENY_ON_SIGNED_IN.includes(location.pathname)) {
+        navigate('/');
+      }
     } else {
-      if (storedToken) {
-        if (ACCESS_DENY_ON_SIGNED_IN.includes(location.pathname)) {
-          navigate('/');
-          // setExplored((state) => state + 1);
-        }
-      } else {
-        if (ACCESS_DENY_ON_SIGNED_OUT.includes(location.pathname)) {
-          navigate('/');
-          // setExplored((state) => state + 1);
-        }
+      if (ACCESS_DENY_ON_SIGNED_OUT.includes(location.pathname)) {
+        navigate('/');
       }
     }
-
-    // if (location.pathname.indexOf('/articles/create') > -1) {
-    //   window.addEventListener('beforeunload', onBeforeUnload);
-    // }
-
-    // return () => {
-    //   window.removeEventListener('beforeunload', onBeforeUnload);
-    // };
   }, [location]);
 
   useEffect(() => {

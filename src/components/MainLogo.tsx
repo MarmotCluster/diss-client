@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, SxProps, Theme } from '@mui/material';
 
-const MainLogo = (props?: { sx?: SxProps<Theme> }) => {
+const MainLogo = (props?: { sx?: SxProps<Theme>; text?: string }) => {
   return (
     <Typography
       sx={{
@@ -18,7 +18,7 @@ const MainLogo = (props?: { sx?: SxProps<Theme> }) => {
         ...props?.sx,
       }}
     >
-      DISS
+      {props?.text ? props.text : 'DISS'}
     </Typography>
   );
 };

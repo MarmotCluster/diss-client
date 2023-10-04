@@ -6,6 +6,7 @@ import Header from './components/global/Header';
 import Home from './pages/home';
 import navigation from './router/navigation';
 import Loading from './components/global/Loading';
+import AuthContext from './components/global/AuthContext';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           },
         }}
       />
+      <AuthContext />
       <Loading />
       <Header />
       <div style={{ fontFamily: 'Poppins' }}>

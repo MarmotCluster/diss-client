@@ -48,13 +48,17 @@ type HttpHeader = 'http' | 'https';
 const Home = () => {
   const navigate = useNavigate();
 
-  /* states */
+  /* stores */
 
   const [auth, setAuth] = useRecoilState(authState);
 
   const [global, setGlobal] = useRecoilState(globalState);
 
   const [result, setResult] = useRecoilState(scanResultState);
+
+  /* states */
+
+  const [open, setOpen] = useState(false);
 
   const [http, setHttp] = useState<HttpHeader>('https');
 
@@ -74,7 +78,7 @@ const Home = () => {
 
   /* functions */
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!auth.isSignedIn) return;
@@ -218,11 +222,6 @@ const Home = () => {
         </TabContext>
         <Box display="flex" alignItems="center" sx={{ mb: 8, textAlign: 'center' }}>
           {renderLogo()}
-          {/* <Switch
-            value={scanType}
-            onChange={(e) => setScanType(e.target.checked)}
-            sx={{ transform: 'rotate(90deg)' }}
-          /> */}
         </Box>
 
         <Paper
