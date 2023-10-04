@@ -13,7 +13,7 @@ const API = {
   SEARCH: {
     result: `/result_data`,
   },
-  list: `/list`,
+  list: `/lists`,
 };
 
 export default API;

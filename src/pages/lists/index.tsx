@@ -29,6 +29,8 @@ const ScannedList = () => {
 
       setGlobal((v) => ({ ...v, loading: false }));
     };
+
+    init();
   }, []);
 
   /* functions */
