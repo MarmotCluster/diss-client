@@ -9,8 +9,11 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { globalState } from '../../stores/global/atom';
 import { authState } from '../../stores/auth/atom';
+
 import MainLogo from '../MainLogo';
 import PopupMenu from '../header/PopupMenu';
+import LoginIcon from '@mui/icons-material/Login';
+import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList';
 
 const Header = () => {
   /* recoils */
@@ -61,13 +64,15 @@ const Header = () => {
         <Grid container height="100%" alignItems="center" justifyContent="space-between">
           <Grid item>
             <Button component={RouterLink} to="/">
-              {/* <span style={{ fontFamily: 'inherit' }}>Diss</span> */}
               <MainLogo sx={{ fontSize: 18 }} />
+            </Button>
+            <Button component={RouterLink} to="/list" startIcon={<FeaturedPlayListIcon />}>
+              Lists
             </Button>
           </Grid>
           {!auth.isSignedIn && (
             <Grid item>
-              <Button component={RouterLink} to="/login">
+              <Button component={RouterLink} to="/login" startIcon={<LoginIcon />}>
                 Sign in
               </Button>
             </Grid>

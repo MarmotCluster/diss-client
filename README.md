@@ -18,6 +18,10 @@ client for xss scanner online
 
 # more features
 
+## Oct 2023
+
+- list of scanned result added as a page in `/list`.
+
 ## Sep 2023
 
 - added selectable type in scan xss injection option.

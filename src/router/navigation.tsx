@@ -3,6 +3,7 @@ import Login from '../pages/login';
 import Register from '../pages/register';
 import ScanResult from '../pages/result';
 import DummySucceeds from '../pages/succeeds';
+import ScannedList from '../pages/lists';
 
 export const ACCESS_DENY_ON_SIGNED_IN = ['/login', , '/register'];
 export const ACCESS_DENY_ON_SIGNED_OUT = ['/articles/create', '/users/me'];
@@ -32,6 +33,10 @@ const navigation: Navigation[] = [
   {
     path: '/scan_reflected_injection_success',
     element: <DummySucceeds />,
+  },
+  {
+    path: '/list',
+    element: <ScannedList />,
   },
 ];
 

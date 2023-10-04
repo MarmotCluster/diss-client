@@ -76,7 +76,14 @@ const useScan = () => {
     });
   };
 
-  return { search, cancelSearchRequest, getResult };
+  const getList = async () => {
+    return await tryCatchResponse(async () => {
+      const res = await refresh(REST.GET, API.list, {});
+      return getResponseUsable(res);
+    });
+  };
+
+  return { search, cancelSearchRequest, getResult, getList };
 };
 
 export default useScan;
