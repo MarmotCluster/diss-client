@@ -1,9 +1,18 @@
-import { atom } from 'recoil';
+import { RecoilState, atom } from 'recoil';
 
-export const authState = atom({
+type AuthState = {
+  isSignedIn: boolean;
+  userData: {
+    email?: string | null;
+  };
+};
+
+export const authState = atom<AuthState>({
   key: 'authState',
   default: {
-    isSignedIn: false,
-    userData: null,
+    isSignedIn: true,
+    userData: {
+      email: 'temp@temp.com',
+    },
   },
 });

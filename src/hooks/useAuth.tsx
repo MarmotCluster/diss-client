@@ -47,7 +47,7 @@ const useAuth = () => {
   const logout = () => {
     window.localStorage.removeItem('accessToken');
     window.localStorage.removeItem('refreshToken');
-    setAuth((state) => ({ ...state, isSignedIn: false, userData: null }));
+    setAuth((state) => ({ ...state, isSignedIn: false, userData: {} }));
   };
 
   const register = async (form: { email: string; username: string; password: string; re_password: string }) => {

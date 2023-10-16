@@ -14,9 +14,9 @@ export const REST: REST = {
   DELETE: 'delete',
 };
 
-export interface ResponseUsable {
+export interface ResponseUsable<T = any> {
   status: number;
-  data: any;
+  data: T;
 }
 
 export const getResponseUsable = (response: AxiosResponse): ResponseUsable => {
