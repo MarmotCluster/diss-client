@@ -107,6 +107,7 @@ const ScannedList = () => {
                   textTransform: 'inherit',
                   justifyContent: 'flex-start',
                   p: 0,
+                  textAlign: 'inherit',
                 }}
                 onClick={() => navigate(`/result/${item.scanID}`)}
               >
@@ -127,6 +128,7 @@ const ScannedList = () => {
                 </Box>
                 <Box sx={{ pl: 2, overflow: 'hidden', '& > *': { overflow: 'hidden', textOverflow: 'ellipsis' } }}>
                   <Typography>{item.scanURL}</Typography>
+                  <Typography>{item.inputURL}</Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Avatar sx={{ width: 18, height: 18 }} />
                     <Typography variant="body2" sx={{ pl: 1, color: 'grey' }}>
