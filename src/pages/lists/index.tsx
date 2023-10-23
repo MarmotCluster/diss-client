@@ -61,7 +61,7 @@ const ScannedList = () => {
 
       const res = await getList();
 
-      if (res.status === 200) {
+      if (res.status < 400) {
         setList([...res.data]);
       }
 
