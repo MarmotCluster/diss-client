@@ -60,6 +60,7 @@ const ScannedList = () => {
       setGlobal((v) => ({ ...v, loading: true }));
 
       const res = await getList();
+      console.log(res);
 
       if (res.status < 400) {
         setList([...res.data]);
