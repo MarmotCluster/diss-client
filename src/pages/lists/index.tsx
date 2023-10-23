@@ -74,9 +74,10 @@ const ScannedList = () => {
 
   /* functions */
   const renderList = () => {
-    const filtered: scanResult[] = auth.isSignedIn
-      ? list.filter((item) => auth.userData?.email === item.scanUserEmail)
-      : [];
+    // const filtered: scanResult[] = auth.isSignedIn
+    //   ? list.filter((item) => auth.userData?.email === item.scanUserEmail)
+    //   : [];
+    const filtered: scanResult[] = auth.isSignedIn ? list : [];
 
     if (filtered.length === 0) {
       return (
