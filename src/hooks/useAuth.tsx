@@ -32,7 +32,7 @@ const useAuth = () => {
         window.localStorage.setItem('refreshToken', res.data.refresh_token);
       }
 
-      setAuth((state) => ({ ...state, isSignedIn: true }));
+      setAuth((state) => ({ ...state, isSignedIn: true, userData: { email: res.data.data.email! } }));
 
       return getResponseUsable(res);
     } catch (err) {
