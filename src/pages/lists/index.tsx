@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import useSearch from '../../hooks/useSearch';
 import { useRecoilState } from 'recoil';
 import { globalState } from '../../stores/global/atom';
-import { Avatar, Box, Container, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Typography } from '@mui/material';
 
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import { authState } from '../../stores/auth/atom';
+import { useNavigate } from 'react-router-dom';
 
 const ScannedList = () => {
   /* stores */
@@ -14,6 +15,8 @@ const ScannedList = () => {
   const [auth, setAuth] = useRecoilState(authState);
 
   /* hooks */
+  const navigate = useNavigate();
+
   const { getList } = useSearch();
 
   /* states */
@@ -90,14 +93,20 @@ const ScannedList = () => {
         <Box sx={{ '& > *:not(:first-child)': { mt: 2 } }}>
           {list.map((item, index) => {
             return (
-              <Box
+              <Button
+                fullWidth
                 sx={{
                   borderRadius: 4,
                   boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                   overflow: 'hidden',
                   display: 'flex',
                   alignItems: 'center',
+                  color: 'inherit',
+                  textTransform: 'inherit',
+                  justifyContent: 'flex-start',
+                  p: 0,
                 }}
+                onClick={() => navigate(`/result/${item.scanID}`)}
               >
                 <Box
                   sx={{
@@ -107,6 +116,7 @@ const ScannedList = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    borderRadius: 2,
                   }}
                 >
                   <Typography sx={{ textAlign: 'center', fontWeight: 900, color: '#fafafa' }} variant="body2">
@@ -122,7 +132,7 @@ const ScannedList = () => {
                     </Typography>
                   </Box>
                 </Box>
-              </Box>
+              </Button>
             );
           })}
         </Box>
