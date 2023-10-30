@@ -212,7 +212,7 @@ const Home = () => {
         }}
       >
         <TabContext value={scanType}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
             <TabList onChange={(e, newValue) => setScanType(newValue)} sx={{ fontSize: 12 }}>
               {['XSS Injection', 'Path Traversal', 'OS Command Injection'].map((item, index) => (
                 <Tab key={index} label={item} value={item} />

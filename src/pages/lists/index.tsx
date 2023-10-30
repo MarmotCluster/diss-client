@@ -109,31 +109,43 @@ const ScannedList = () => {
                   p: 0,
                   textAlign: 'inherit',
                 }}
-                onClick={() => navigate(`/result/${item.scanID}`)}
+                onClick={() => navigate(`/list/${item.scanID}`)}
               >
                 <Box
                   sx={{
                     width: 88,
-                    height: 64,
-                    bgcolor: 'red',
+                    height: 70,
+                    background: 'linear-gradient(135deg, rgba(255,0,0,1) 0%, rgba(197,0,255,1) 100%)',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    borderRadius: 2,
                   }}
                 >
-                  <Typography sx={{ textAlign: 'center', fontWeight: 900, color: '#fafafa' }} variant="body2">
+                  <Typography sx={{ textAlign: 'center', fontWeight: 900, color: '#fafafa', p: 2 }} variant="body2">
                     {item.scanType}
                   </Typography>
                 </Box>
-                <Box sx={{ pl: 2, overflow: 'hidden', '& > *': { overflow: 'hidden', textOverflow: 'ellipsis' } }}>
-                  <Typography>{item.scanURL}</Typography>
-                  <Typography>{item.inputURL}</Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Avatar sx={{ width: 18, height: 18 }} />
-                    <Typography variant="body2" sx={{ pl: 1, color: 'grey' }}>
-                      {item.scanUserEmail}
-                    </Typography>
+                <Box
+                  sx={{
+                    pl: 2,
+                    height: 70,
+                    fontFamily: 'Montserrat',
+                    overflow: 'hidden',
+                    boxShadow: '-4px 0 8px rgba(0,0,0,0.08)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    '& > *': { overflow: 'hidden', textOverflow: 'ellipsis' },
+                  }}
+                >
+                  <Box>
+                    {/* <Typography>{item.scanURL}</Typography> */}
+                    <Typography sx={{ fontWeight: 500 }}>{item.inputURL}</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Avatar sx={{ width: 18, height: 18 }} />
+                      <Typography variant="body2" sx={{ pl: 1, color: 'grey', fontSize: 12 }}>
+                        {item.scanUserEmail}
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
               </Button>

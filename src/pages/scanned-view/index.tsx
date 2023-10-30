@@ -9,13 +9,13 @@ import useSearch from '../../hooks/useSearch';
 import { globalState } from '../../stores/global/atom';
 import { scanResultState } from '../../stores/scanResult/atom';
 
-const ScanResult = (props: any) => {
+const ScannedItemView = () => {
   /* hooks */
   const navigate = useNavigate();
 
   const { id } = useParams();
 
-  const { getResult } = useSearch();
+  const { getResultFromList } = useSearch();
 
   /* stores */
   const [result, setResult] = useRecoilState(scanResultState);
@@ -67,7 +67,7 @@ const ScanResult = (props: any) => {
     const init = async () => {
       setGlobal((v) => ({ ...v, loading: true }));
       try {
-        const res = await getResult(Number(id));
+        const res = await getResultFromList(Number(id));
         if (res.status === 200) {
           setResult(res.data);
         }
@@ -177,4 +177,4 @@ const ScanResult = (props: any) => {
   );
 };
 
-export default ScanResult;
+export default ScannedItemView;

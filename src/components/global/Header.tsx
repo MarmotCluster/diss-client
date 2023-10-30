@@ -1,4 +1,4 @@
-import { Avatar, IconButton } from '@mui/material';
+import { Avatar, Divider, IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -63,19 +63,26 @@ const Header = () => {
       >
         <Grid container height="100%" alignItems="center" justifyContent="space-between">
           <Grid item>
-            <Button component={RouterLink} to="/">
-              <MainLogo sx={{ fontSize: 18 }} />
-            </Button>
-            <Button component={RouterLink} to="/list" startIcon={<FeaturedPlayListIcon />}>
-              Lists
-            </Button>
+            <Box sx={{ display: 'flex' }}>
+              <Button component={RouterLink} to="/">
+                <MainLogo sx={{ fontSize: 18 }} />
+              </Button>
+              <Box sx={{ px: 2, display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ bgcolor: '#ccc', height: 20, width: '1px' }} />
+              </Box>
+              <Button component={RouterLink} to="/list" startIcon={<FeaturedPlayListIcon />}>
+                Lists
+              </Button>
+            </Box>
           </Grid>
           {!auth.isSignedIn && (
-            <Grid item>
-              <Button component={RouterLink} to="/login" startIcon={<LoginIcon />}>
-                Sign in
-              </Button>
-            </Grid>
+            <>
+              <Grid item>
+                <Button component={RouterLink} to="/login" startIcon={<LoginIcon />}>
+                  Sign in
+                </Button>
+              </Grid>
+            </>
           )}
           {auth.isSignedIn && (
             <Grid item>

@@ -4,6 +4,7 @@ import Register from '../pages/register';
 import ScanResult from '../pages/result';
 import DummySucceeds from '../pages/succeeds';
 import ScannedList from '../pages/lists';
+import ScannedItemView from '../pages/scanned-view';
 
 export const ACCESS_DENY_ON_SIGNED_IN = ['/login', , '/register'];
 export const ACCESS_DENY_ON_SIGNED_OUT = ['/articles/create', '/users/me'];
@@ -37,6 +38,10 @@ const navigation: Navigation[] = [
   {
     path: '/list',
     element: <ScannedList />,
+  },
+  {
+    path: '/list/:id',
+    element: <ScannedItemView />,
   },
 ];
 

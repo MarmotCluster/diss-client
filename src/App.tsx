@@ -21,7 +21,7 @@ export default function App() {
           },
         }}
       />
-      {/* <AuthContext /> */}
+      <AuthContext />
       <Loading />
       <Header />
       <div style={{ fontFamily: 'Poppins' }}>
