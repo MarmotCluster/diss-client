@@ -17,7 +17,7 @@ const OSCommandInjectionOnline = () => {
         userSelect: 'none',
       }}
     >
-      OSCommand Injection Online
+      OSCommand Injection
     </Typography>
   );
 };

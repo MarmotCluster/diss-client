@@ -17,7 +17,7 @@ const PathTraversalOnline = () => {
         userSelect: 'none',
       }}
     >
-      PathTraversal Online
+      Path Traversal
     </Typography>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-const XSSInjectionOnline = () => {
+const SQLInjectionOnline = () => {
   return (
     <Typography
       sx={{
@@ -17,9 +17,9 @@ const XSSInjectionOnline = () => {
         userSelect: 'none',
       }}
     >
-      XSS Injection
+      SQL Injection
     </Typography>
   );
 };
 
-export default XSSInjectionOnline;
+export default SQLInjectionOnline;

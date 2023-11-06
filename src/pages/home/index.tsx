@@ -28,7 +28,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import DirectionsIcon from '@mui/icons-material/Directions';
 import useScan from '../../hooks/useSearch';
 import { toast } from 'react-hot-toast';
-import { getErrorMessage } from '../../utils';
+import { ResponseUsable, getErrorMessage } from '../../utils';
 import { useRecoilState } from 'recoil';
 import { globalState } from '../../stores/global/atom';
 import { useNavigate } from 'react-router-dom';
@@ -42,6 +42,7 @@ import TabList from '@mui/lab/TabList';
 import { ScanTypes, XSSOption, XSSType } from '../../types';
 import zIndex from '@mui/material/styles/zIndex';
 import { authState } from '../../stores/auth/atom';
+import SQLInjectionOnline from '../../components/SQLInjectionOnline';
 
 type HttpHeader = 'http' | 'https';
 
@@ -90,7 +91,7 @@ const Home = () => {
       }
       try {
         setGlobal((v) => ({ ...v, loading: true }));
-        let res;
+        let res: ResponseUsable;
         switch (scanType) {
           case 'XSS Injection':
             res = await search.injection(`${http}://${url}`, xssType, xssOption);
@@ -101,13 +102,15 @@ const Home = () => {
           case 'OS Command Injection':
             res = await search.oscommand(`${http}://${url}`);
             break;
+          case 'SQL Injection':
+            res = await search.sqlinjection(`${http}://${url}`);
         }
 
-        if (res.status >= 400) {
-          toast.error(getErrorMessage(res.data));
+        if (res!.status >= 400) {
+          toast.error(getErrorMessage(res!.data));
         } else {
-          setResult([...res.data]);
-          navigate(`/result/${res.data.resultLink}`);
+          setResult([...res!.data]);
+          navigate(`/result/${res!.data.resultLink}`);
           // ... 응답 데이터는 resultLink로 리다이렉트할 링크를 전송하도록 임의 채택
         }
       } catch (err) {
@@ -196,6 +199,8 @@ const Home = () => {
         return <PathTraversalOnline />;
       case 'OS Command Injection':
         return <OSCommandInjectionOnline />;
+      case 'SQL Injection':
+        return <SQLInjectionOnline />;
     }
   };
 
@@ -213,8 +218,12 @@ const Home = () => {
       >
         <TabContext value={scanType}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-            <TabList onChange={(e, newValue) => setScanType(newValue)} sx={{ fontSize: 12 }}>
-              {['XSS Injection', 'Path Traversal', 'OS Command Injection'].map((item, index) => (
+            <TabList
+              onChange={(e, newValue) => setScanType(newValue)}
+              sx={{ fontSize: 12, maxWidth: 400 }}
+              variant="scrollable"
+            >
+              {['XSS Injection', 'Path Traversal', 'OS Command Injection', 'SQL Injection'].map((item, index) => (
                 <Tab key={index} label={item} value={item} />
               ))}
             </TabList>

@@ -63,10 +63,21 @@ const useScan = () => {
         return getResponseUsable(res);
       });
     },
+    sqlinjection: async (url: string) => {
+      setCancelComponent();
+      return await tryCatchResponse(async () => {
+        const res = await refresh(REST.POST, API.scan4, { data: { href: url }, cancelToken: source.token });
+        return getResponseUsable(res);
+      });
+    },
   };
 
-  const cancelSearchRequest = () => {
+  const cancelSearchRequest = async () => {
     source.cancel('Canceled.');
+    return await tryCatchResponse(async () => {
+      const res = await refresh(REST.POST, API.cancel, {});
+      return getResponseUsable(res);
+    });
   };
 
   const getResult = async (postId: number) => {

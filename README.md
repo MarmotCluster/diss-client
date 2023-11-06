@@ -8,6 +8,10 @@ client for xss scanner online
 
 # faced issues
 
+## Nov 2023
+
+- consider using http request to cancel searching.
+
 ## Jun 2023
 
 - consider using `socket.io` for rendering progress while searching
@@ -17,6 +21,11 @@ client for xss scanner online
 - ~~consider using `socket.io` for rendering progress while searching attack vulnerabilities.~~ DISMISSED in May 1
 
 # more features
+
+## Nov 2023
+
+- added search option: SQL Injection
+- solved faced issue.
 
 ## Oct 2023
 
