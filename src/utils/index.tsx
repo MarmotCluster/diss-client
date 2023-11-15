@@ -66,7 +66,7 @@ export const refresh = (
     header?: AxiosRequestConfig['headers'];
     cancelToken?: AxiosRequestConfig['cancelToken'];
   }
-) => {
+): Promise<any> => {
   const fetchData = async (bypass: boolean = false): Promise<any> => {
     const storedToken = window.localStorage.getItem('accessToken');
     const refreshToken = window.localStorage.getItem('refreshToken');

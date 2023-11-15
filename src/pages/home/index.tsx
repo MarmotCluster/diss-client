@@ -109,8 +109,8 @@ const Home = () => {
         if (res!.status >= 400) {
           toast.error(getErrorMessage(res!.data));
         } else {
-          setResult([...res!.data]);
           navigate(`/result/${res!.data.resultLink}`);
+          setResult([...res!.data]);
           // ... 응답 데이터는 resultLink로 리다이렉트할 링크를 전송하도록 임의 채택
         }
       } catch (err) {
